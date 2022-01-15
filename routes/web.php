@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -22,13 +23,13 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function(){
     Route::get('/login',[LoginController::class,'index'])->name('login');
     Route::post('/login',[LoginController::class,'login']);
+    Route::get('/signUp',[LoginController::class,'signUp'])->name('signUp');
+    Route::post('/signUp',[LoginController::class,'signUpAct']);
 });
 
 Route::get('signUpCus',[LoginController::class,'signUpCus'])->name('signUpCus');
 Route::post('signUpCus',[LoginController::class,'signUpCusAct']);
 
 Route::get('test',function(){
-    list($ms, $timestamp) = explode(" ", microtime());
-    $token =$timestamp.$ms.substr(random_int(0, 99),-2); 
-    return Hash::make($token);
+    return !Customer::find(30);
 });
