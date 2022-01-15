@@ -14,7 +14,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table='users';
+    private $userType = [
+        '1' => 'QA',
+        '2' => 'RD',
+        '3' => 'PM',
+        '4' => 'Administrator',
+    ];
+
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -47,4 +54,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getToken()
+    {
+        return Customer::find($this->customer_id)->token;
+    }
+
+    public function getUserType()
+    {
+        return $this->userType[$this->type];
+    }
 }

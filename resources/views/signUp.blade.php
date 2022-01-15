@@ -46,8 +46,8 @@
 
             <div>
                 <label for="">
-                    customer_id
-                    <input type="text" name="customer_id" value="{{old('customer_id')}}">
+                    token
+                    <input type="text" name="token">
                 </label>
             </div>
 

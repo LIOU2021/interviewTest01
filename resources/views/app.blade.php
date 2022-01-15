@@ -13,9 +13,10 @@
 <body>
     <div id="app">
         @if(Auth::check())
-            <p>成功登入~</p>
             <div class="text-end">
-                <a href="{{route('logout')}}" class="btn btn-danger">登出</a>
+                <button onclick="alert('{{Auth::user()->getToken()}}');" style="display:inline-block;">提示token</button>
+                <p style="display:inline-block;">{{Auth::user()->getUserType()}}</p>
+                <a href="{{route('logout')}}" class="btn btn-danger" style="display:inline-block;">登出</a>
             </div>
         @else
             <div class="text-end">

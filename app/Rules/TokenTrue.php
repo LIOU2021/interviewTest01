@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\Customer;
 use Illuminate\Contracts\Validation\Rule;
 
-class CustomerIdNotExist implements Rule
+class TokenTrue implements Rule
 {
     /**
      * Create a new rule instance.
@@ -26,8 +26,7 @@ class CustomerIdNotExist implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Customer::find($value);
-
+        return Customer::where('token',$value)->get()->count();
     }
 
     /**
@@ -37,6 +36,6 @@ class CustomerIdNotExist implements Rule
      */
     public function message()
     {
-        return 'Customer_id不存在!';
+        return '無此token!';
     }
 }

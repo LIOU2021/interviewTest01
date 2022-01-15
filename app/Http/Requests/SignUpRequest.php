@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\CustomerIdNotExist;
+use App\Rules\TokenTrue;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SignUpRequest extends FormRequest
@@ -26,10 +27,10 @@ class SignUpRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'customer_id'=>['required',new CustomerIdNotExist],
             'type'=>'required',
             'password'=>'required',
             'email'=>'required|unique:users,email|email',
+            'token'=>[new TokenTrue],
         ];
     }
 
@@ -37,7 +38,6 @@ class SignUpRequest extends FormRequest
     {
         return [
             'name.required' => '名稱必填寫!',
-            'customer_id.required' => 'customer_id必填寫!',
             'type.required' => 'type必填寫!',
             'password.required' => 'password必填寫!',
             'email.required' => 'email必填寫!',

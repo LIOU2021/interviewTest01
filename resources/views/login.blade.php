@@ -17,6 +17,13 @@
 
 <body>
     <div class="text-center">
+        @if (!is_null(session('token')))
+        <div class="alert alert-success">
+            <ul>
+                <li>{{session('token')}}</li>
+            </ul>
+        </div>
+        @endif
         <form action="{{route('login')}}" method="POST">
             @csrf
             <div>
@@ -38,7 +45,7 @@
                 <a href="{{route('signUp')}}">還沒成為會員?</a>
             </div>
             <div>
-                <a href="{{route('signUpCus')}}">還沒customer name?</a>
+                <a href="{{route('signUpCus')}}">還沒token?</a>
             </div>
         </form>
     </div>

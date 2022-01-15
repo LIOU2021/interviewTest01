@@ -46,6 +46,7 @@ class LoginController extends Controller
     {
         $data = $request->all();
         $data['password']=Hash::make($data['password']);
+        $data['customer_id']=Customer::where('token',$request->token)->first()->id;
         if(User::create($data)){
             return redirect()->route('login')->with('msg','註冊成功');
         }
@@ -58,13 +59,13 @@ class LoginController extends Controller
 
     public function signUpCusAct(CusRequest $request)
     {
-
-        echo $request->name;
-        echo Customer::getToken();
-        Customer::create([
+        $data = Customer::create([
             'name' => $request->name,
             'token' => Customer::getToken(),
         ]);
-        return redirect()->route('login')->with('msg', 'customer name註冊成功!');
+        $token = Customer::where('name',$data->name)->first()->token;
+        return redirect()->route('login')
+        ->with('msg', 'customer name註冊成功!')
+        ->with('token', 'token為'.$token);
     }
 }
