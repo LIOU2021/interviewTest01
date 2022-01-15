@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -27,9 +28,15 @@ Route::middleware('guest')->group(function(){
     Route::post('/signUp',[LoginController::class,'signUpAct']);
 });
 
+Route::get('/logout',[LoginController::class,'logout'])->name('logout');
+
 Route::get('signUpCus',[LoginController::class,'signUpCus'])->name('signUpCus');
 Route::post('signUpCus',[LoginController::class,'signUpCusAct']);
 
 Route::get('test',function(){
-    return !Customer::find(30);
+return Hash::make('password');
+    //  dd(User::where('email','aa78789898etw@gmail.com')->first());
+    // $password = bcrypt('secret');
+    // dd(Hash::check('secret', $password));
+    // return !Customer::find(30);
 });

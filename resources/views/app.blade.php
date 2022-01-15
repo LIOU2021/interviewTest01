@@ -13,7 +13,10 @@
 <body>
     <div id="app">
         @if(Auth::check())
-            <p>你登入了</p>
+            <p>成功登入~</p>
+            <div class="text-end">
+                <a href="{{route('logout')}}" class="btn btn-danger">登出</a>
+            </div>
         @else
             <div class="text-end">
                 <a href="{{route('login')}}" class="btn btn-success">登入</a>

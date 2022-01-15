@@ -19,6 +19,20 @@
     <div class="text-center">
         <form action="{{route('login')}}" method="POST">
             @csrf
+            <div>
+                <label for="">
+                    email
+                    <input type="email" name="email">
+                </label>
+            </div>
+            
+            <div>
+                <label for="">
+                    password
+                    <input type="password" name="password">
+                </label>
+            </div>
+
             <input type="submit">
             <div>
                 <a href="{{route('signUp')}}">還沒成為會員?</a>
@@ -26,7 +40,6 @@
             <div>
                 <a href="{{route('signUpCus')}}">還沒customer name?</a>
             </div>
-
         </form>
     </div>
     <script src="{{asset('js/app.js')}}"></script>
