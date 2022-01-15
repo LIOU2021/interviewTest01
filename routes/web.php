@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
+})->name('home');
+
+Route::middleware('guest')->group(function(){
+    Route::get('/login',[LoginController::class,'index'])->name('login');
+    Route::post('/login',[LoginController::class,'login']);
+});
+
+Route::get('signUpCus',[LoginController::class,'signUpCus'])->name('signUpCus');
+Route::post('signUpCus',[LoginController::class,'signUpCusAct']);
+
+Route::get('test',function(){
+    list($ms, $timestamp) = explode(" ", microtime());
+    $token =$timestamp.$ms.substr(random_int(0, 99),-2); 
+    return Hash::make($token);
 });
