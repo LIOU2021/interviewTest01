@@ -34,6 +34,7 @@
         <div class="row">
             <div class="col-4"></div>
             <div class="col-4">
+                <h1>登入</h1>
                 @if (!is_null(session('token')))
                 <div class="alert alert-success">
                     <ul>
@@ -60,7 +61,7 @@
                     <div>
                         <input type="submit">
                     </div>
-                    
+
                     <div>
                         <a href="{{route('signUp')}}">還沒成為會員?</a>
                     </div>
