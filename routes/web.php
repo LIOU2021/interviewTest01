@@ -3,12 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Models\Customer;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Services\TicketService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,10 +40,17 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
 
 });
 
-Route::get('test',function(Request $request){
-    if(($request->is('test'))){
-        return 'yes';
-    }else{
-        return 'no';
-    }
+Route::middleware("auth")->group(function(){
+    Route::prefix('resolve')->name('resolve.')->group(function(){
+        Route::post('bug',[TicketService::class,'resolveBug'])->name('bug');
+        Route::post('featureRequest',[TicketService::class,'resolveFeatureRequest'])->name('featureRequest');
+        Route::post('testCase',[TicketService::class,'resolveTestCase'])->name('testCase');
+    });
+    Route::get('ticket/{id}',[HomeController::class,'ticket']);
+    Route::prefix('delete')->name('delete.')->group(function(){
+        Route::post('bug',[TicketService::class,'deleteBug'])->name('bug');
+
+    });
 });
+
+Route::get('test',[TicketService::class,"test"]);

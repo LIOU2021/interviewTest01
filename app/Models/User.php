@@ -65,11 +65,87 @@ class User extends Authenticatable
         return $this->userType[$this->type];
     }
 
-    public function group(){
+    public function group()
+    {
         return $this->belongsTo(Group::class);
     }
 
-    public function tickets(){
+    public function tickets()
+    {
         return $this->hasMany(Ticket::class);
+    }
+
+    public function canCreateBug()
+    {
+        $type = $this->type;
+        if ($type == '1' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canEditBug()
+    {
+        $type = $this->type;
+        if ($type == '1' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canDeleteBug()
+    {
+        $type = $this->type;
+        if ($type == '1' || $type == '4') {
+            Log::debug('yes');
+            return true;
+        }
+        Log::debug('no');
+        return false;
+    }
+
+    public function canResolveBug()
+    {
+        $type = $this->type;
+        if ($type == '2' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canCreateTestCase()
+    {
+        $type = $this->type;
+        if ($type == '1' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canResolveTestCase()
+    {
+        $type = $this->type;
+        if ($type == '1' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canCreateFeatureRequest()
+    {
+        $type = $this->type;
+        if ($type == '3' || $type == '4') {
+            return true;
+        }
+        return false;
+    }
+
+    public function canResolveFeatureRequest()
+    {
+        $type = $this->type;
+        if ($type == '2' || $type == '4') {
+            return true;
+        }
+        return false;
     }
 }

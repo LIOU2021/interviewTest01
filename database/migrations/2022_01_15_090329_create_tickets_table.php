@@ -22,6 +22,7 @@ class CreateTicketsTable extends Migration
             $table->string('severity');
             $table->string('priority');
             $table->string('type');
+            $table->string('group_id');
             $table->timestamps();
         });
     }
