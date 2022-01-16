@@ -22,6 +22,9 @@ class HomeController extends Controller
     public function ticket(Request $request, $id)
     {
         $data = Ticket::find($id);
+        if($data->group_id != Auth::user()->group_id){
+            return redirect()->route('home')->withErrors('無權限訪問');
+        }
         return view('ticket',compact('data'));
     }
 }
