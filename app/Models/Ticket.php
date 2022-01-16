@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,11 +25,14 @@ class Ticket extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
+    protected $hidden = [];
 
-    ];
-
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

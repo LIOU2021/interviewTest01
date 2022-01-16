@@ -28,7 +28,7 @@ class SignUpRequest extends FormRequest
         return [
             'name'=>'required',
             'type'=>'required',
-            'password'=>'required',
+            'password'=>'required|confirmed',
             'email'=>'required|unique:users,email|email',
             'token'=>[new TokenTrue],
         ];
@@ -40,6 +40,7 @@ class SignUpRequest extends FormRequest
             'name.required' => '名稱必填寫!',
             'type.required' => 'type必填寫!',
             'password.required' => 'password必填寫!',
+            'password.confirmed'=>'確認密碼不一致',
             'email.required' => 'email必填寫!',
             'email.unique' => 'email重複!',
             'email.email'=>'email格式不正確',

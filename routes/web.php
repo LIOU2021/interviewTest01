@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Models\Customer;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +26,7 @@ Route::get('/', function () {
 
 Route::middleware('guest')->group(function(){
     Route::get('/login',[LoginController::class,'index'])->name('login');
-    Route::post('/login',[LoginController::class,'login']);
+    Route::post('/login',[LoginController::class,'login'])->middleware('userVerify');
     Route::get('/signUp',[LoginController::class,'signUp'])->name('signUp');
     Route::post('/signUp',[LoginController::class,'signUpAct']);
 });
@@ -33,10 +36,14 @@ Route::get('/logout',[LoginController::class,'logout'])->name('logout');
 Route::get('signUpCus',[LoginController::class,'signUpCus'])->name('signUpCus');
 Route::post('signUpCus',[LoginController::class,'signUpCusAct']);
 
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
+    Route::middleware('onlyAdmin')->group(function(){
+        Route::get('user',[AdminController::class,"userIndex"])->name('user');
+        Route::post('verify',[AdminController::class,"allowVerify"])->name('verify');
+    });
+
+});
+
 Route::get('test',function(){
-return Hash::make('password');
-    //  dd(User::where('email','aa78789898etw@gmail.com')->first());
-    // $password = bcrypt('secret');
-    // dd(Hash::check('secret', $password));
-    // return !Customer::find(30);
+    dd(!(Auth::user()->type=='4'));
 });

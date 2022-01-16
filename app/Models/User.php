@@ -32,7 +32,8 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'customer_id',
+        'group_id',
+        'verify',
     ];
 
     /**
@@ -56,7 +57,7 @@ class User extends Authenticatable
 
     public function getToken()
     {
-        return Group::find($this->customer_id)->token;
+        return Group::find($this->group_id)->token;
     }
 
     public function getUserType()

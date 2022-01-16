@@ -14,7 +14,7 @@
 
         label input {
             position: absolute;
-            left: 50px;
+            left: 80px;
         }
 
         form div {
@@ -35,6 +35,7 @@
             <div class="col-4"></div>
             <div class="col-4">
                 <h1>登入</h1>
+                
                 @if (!is_null(session('token')))
                 <div class="alert alert-success">
                     <ul>
@@ -42,6 +43,17 @@
                     </ul>
                 </div>
                 @endif
+                
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <form action="{{route('login')}}" method="POST">
                     @csrf
                     <div>

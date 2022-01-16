@@ -9,16 +9,18 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
 
     <style>
-        form div{
+        form div {
             margin-top: 15px;
         }
-        label{
+
+        label {
             position: relative;
         }
 
-        label input,label select{
+        label input,
+        label select {
             position: absolute;
-            left: 70px;
+            left: 130px;
         }
     </style>
 </head>
@@ -29,7 +31,7 @@
             <div class="col-4"></div>
 
             <div class="col-4">
-            <h1>註冊會員</h1>
+                <h1>註冊會員</h1>
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -54,7 +56,7 @@
                     <div>
                         <label for="">
                             type
-                            <select name="type" id="" value="{{old('type')}}">
+                            <select name="type" id="">
                                 <option value="1">QA</option>
                                 <option value="2">RD</option>
                                 <option value="3">PM</option>
@@ -74,6 +76,13 @@
                         <label for="">
                             password
                             <input type="password" name="password" value="{{old('password')}}">
+                        </label>
+                    </div>
+
+                    <div>
+                        <label for="">
+                        password confirm
+                            <input type="password" name="password_confirmation" value="{{old('password_confirmation')}}">
                         </label>
                     </div>
 
