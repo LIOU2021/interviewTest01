@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\Customer;
+use App\Models\Group;
 use Illuminate\Contracts\Validation\Rule;
 
 class TokenTrue implements Rule
@@ -26,7 +26,7 @@ class TokenTrue implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Customer::where('token',$value)->get()->count();
+        return Group::where('token',$value)->get()->count();
     }
 
     /**

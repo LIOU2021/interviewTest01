@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 
-class Customer extends Model
+class Group extends Model
 {
     use HasFactory;
 
@@ -34,5 +35,9 @@ class Customer extends Model
         list($ms, $timestamp) = explode(" ", microtime());
         $token = $timestamp . $ms . substr(random_int(0, 99), -2);
         return Hash::make($token);
+    }
+
+    public function users(){
+        return $this->HasMany(User::class);
     }
 }

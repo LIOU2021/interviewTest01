@@ -11,6 +11,7 @@
 
 <body>
     <div class="text-center">
+        <h1>取得group token</h1>
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

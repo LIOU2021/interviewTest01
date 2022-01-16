@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CusRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
-use App\Models\Customer;
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $credentials = [
             'email' => $request['email'],
@@ -46,7 +46,7 @@ class LoginController extends Controller
     {
         $data = $request->all();
         $data['password']=Hash::make($data['password']);
-        $data['customer_id']=Customer::where('token',$request->token)->first()->id;
+        $data['group_id']=Group::where('token',$request->token)->first()->id;
         if(User::create($data)){
             return redirect()->route('login')->with('msg','註冊成功');
         }
@@ -59,11 +59,11 @@ class LoginController extends Controller
 
     public function signUpCusAct(CusRequest $request)
     {
-        $data = Customer::create([
+        $data = Group::create([
             'name' => $request->name,
-            'token' => Customer::getToken(),
+            'token' => Group::getToken(),
         ]);
-        $token = Customer::where('name',$data->name)->first()->token;
+        $token = Group::where('name',$data->name)->first()->token;
         return redirect()->route('login')
         ->with('msg', 'customer name註冊成功!')
         ->with('token', 'token為'.$token);

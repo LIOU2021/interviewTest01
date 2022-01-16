@@ -24,7 +24,7 @@ class CusRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:customers,name',
+            'name'=>'required|unique:groups,name',
         ];
     }
 

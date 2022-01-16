@@ -56,11 +56,19 @@ class User extends Authenticatable
 
     public function getToken()
     {
-        return Customer::find($this->customer_id)->token;
+        return Group::find($this->customer_id)->token;
     }
 
     public function getUserType()
     {
         return $this->userType[$this->type];
+    }
+
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
+
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
     }
 }
