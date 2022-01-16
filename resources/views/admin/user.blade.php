@@ -18,16 +18,17 @@
 
 </head>
 
-<body>
+<body style="position: relative;">
     <x-navBar></x-navBar>
-    <h1>會員管理</h1>
+    <h1>成員管理</h1>
 
     <x-message></x-message>
-
+    <x-dialog></x-dialog>
     <div id="datatable">
         <div>
             <button @click="allow()" class="btn btn-success">允許審核申請</button>
-            <button class="btn btn-danger">刪除</button>
+            <button @click="toggleDialog()" class="btn btn-primary">新增</button>
+            <button @click="deleteUser()" class="btn btn-danger">刪除</button>
         </div>
 
         <table class="mydatatable display" style="width:100%">
@@ -77,19 +78,51 @@
                         axios.post('/admin/verify', {
                             token: this.token,
                             id: selectUserId,
-                        }).then(function(e){
-                            if(e.data == 'success'){
+                        }).then(function(e) {
+                            if (e.data == 'success') {
                                 alert('更新成功');
                                 window.location.reload();
-                            }else{
+                            } else {
                                 alert('更新失敗');
                             }
                         })
                     }
                 },
+                deleteUser() {
+                    let selectLn = $("input[type='checkbox']:checked").length;
+                    if (selectLn < 1) {
+                        alert("請選擇至少一項!");
+                        return;
+                    }
+
+                    for (i = 0; i < selectLn; i++) {
+                        let selectUserId = $("input[type='checkbox']:checked").eq(i).parent().parent().children().eq(1).text();
+                        axios.post('/admin/delete', {
+                            token: this.token,
+                            id: selectUserId,
+                        })
+                    }
+                    alert('更新成功');
+                    window.location.reload();
+                },
+                toggleDialog() {
+                    if ($(".dialog").is(":hidden")) {
+                        $(".dialog").show();
+                    } else {
+                        $(".dialog").hide();
+                    }
+
+                }
             },
             created() { // 生命周期-在一个实例被创建之后执行代码。 `this` 指向 vm 实例
+
+            },
+            mounted() { //vue實體與掛載完成
                 $(".mydatatable").DataTable();
+                $("#DataTables_Table_0_filter").css({
+                    'position': 'absolute',
+                    'right': '274px'
+                })
             },
 
         }

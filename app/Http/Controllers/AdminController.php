@@ -31,4 +31,17 @@ class AdminController extends Controller
         }
         return 'fail';
     }
+
+    public function delete(VerifyRequest $request){
+        $getIdFromGroup = Group::where('token', $request->token)->first()->id;
+        $allow = User::where('group_id',$getIdFromGroup)->where('id',$request->id)->get()->count();
+        if ($allow) {
+            $userId = $request->id;
+            $user = User::find($userId);
+            if ($user->delete()) {
+                return 'success';
+            }
+        }
+        return 'fail';
+    }
 }

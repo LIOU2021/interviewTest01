@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Models\Customer;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -20,16 +22,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-})->name('home');
+Route::get('/', [HomeController::class,'index'])->name('home');
 
 Route::middleware('guest')->group(function(){
     Route::get('/login',[LoginController::class,'index'])->name('login');
     Route::post('/login',[LoginController::class,'login'])->middleware('userVerify');
     Route::get('/signUp',[LoginController::class,'signUp'])->name('signUp');
-    Route::post('/signUp',[LoginController::class,'signUpAct']);
 });
+Route::post('/signUp',[LoginController::class,'signUpAct']);
 
 Route::get('/logout',[LoginController::class,'logout'])->name('logout');
 
@@ -40,10 +40,15 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function(){
     Route::middleware('onlyAdmin')->group(function(){
         Route::get('user',[AdminController::class,"userIndex"])->name('user');
         Route::post('verify',[AdminController::class,"allowVerify"])->name('verify');
+        Route::post('delete',[AdminController::class,"delete"])->name('delete');
     });
 
 });
 
-Route::get('test',function(){
-    dd(!(Auth::user()->type=='4'));
+Route::get('test',function(Request $request){
+    if(($request->is('test'))){
+        return 'yes';
+    }else{
+        return 'no';
+    }
 });

@@ -8,9 +8,9 @@ use App\Http\Requests\SignUpRequest;
 use App\Models\Group;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -56,6 +56,9 @@ class LoginController extends Controller
         }
 
         if(User::create($data)){
+            if(Auth::user()->type=='4'){
+                return redirect()->back()->with('msg','註冊成功');
+            }
             return redirect()->route('login')->with('msg','註冊成功');
         }
     }
