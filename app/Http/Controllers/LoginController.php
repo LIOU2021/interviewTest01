@@ -56,10 +56,11 @@ class LoginController extends Controller
         }
 
         if(User::create($data)){
-            if(Auth::user()->type=='4'){
+            if(Auth::check()&&Auth::user()->type=='4'){
                 return redirect()->back()->with('msg','註冊成功');
+            }else{
+                return redirect()->route('login')->with('msg','註冊成功');
             }
-            return redirect()->route('login')->with('msg','註冊成功');
         }
     }
 
