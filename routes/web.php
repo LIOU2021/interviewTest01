@@ -46,10 +46,23 @@ Route::middleware("auth")->group(function(){
         Route::post('featureRequest',[TicketService::class,'resolveFeatureRequest'])->name('featureRequest');
         Route::post('testCase',[TicketService::class,'resolveTestCase'])->name('testCase');
     });
+    
     Route::get('ticket/{id}',[HomeController::class,'ticket']);
+    
     Route::prefix('delete')->name('delete.')->group(function(){
         Route::post('bug',[TicketService::class,'deleteBug'])->name('bug');
 
+    });
+
+    Route::prefix('update')->name('update.')->group(function(){
+        Route::post('bug',[TicketService::class,'editBug'])->name('bug');
+
+    });
+
+    Route::prefix('create')->name('create.')->group(function(){
+        Route::post('bug',[TicketService::class,'createBug'])->name('bug');
+        Route::post('featureRequest',[TicketService::class,'createFeatureRequest'])->name('featureRequest');
+        Route::post('testCase',[TicketService::class,'createTestCase'])->name('testCase');
     });
 });
 

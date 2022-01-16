@@ -12,13 +12,19 @@
 </head>
 
 <body>
+    @auth
+    <x-ticketDialog></x-ticketDialog>
+    @endauth
     <div id="myApp">
         <x-navBar></x-navBar>
+        <h1>首頁</h1>
         <x-message></x-message>
         @if(isset($data))
         <div>
             <button @click="resolve()" class="btn btn-secondary">resolve</button>
             <button @click="_delete()" class="btn btn-danger">delete</button>
+            <button @click="toggleDialog('create')" class="btn btn-success">create</button>
+            <button @click="toggleDialog('update')" class="btn btn-primary">edit</button>
         </div>
         <table class="mydatatable display" style="width:100%">
             <thead>
@@ -32,6 +38,7 @@
                     <th>status</th>
                     <th>severity</th>
                     <th>priority</th>
+                    <th style="display: none;">description</th>
 
                 </tr>
             </thead>
@@ -45,11 +52,11 @@
                     <td>
                         <a href="/ticket/{{$item->id}}">{{$item->summary}}</a>
                     </td>
-
                     <td>{{$item->getType()}}</td>
                     <td>{{$item->getStatus()}}</td>
                     <td>{{$item->getSeverity()}}</td>
                     <td>{{$item->getPriority()}}</td>
+                    <td style="display: none;">{{$item->description}}</td>
 
 
                 </tr>
@@ -67,6 +74,7 @@
             el: "#myApp",
             data() { //放自定義變數的地方
                 return {
+                    dialogSatus: "",
                     type: "",
                     token: "{{Auth::user()->getToken()}}",
                     resolveUrl: {
@@ -76,7 +84,18 @@
                     },
                     deleteUrl: {
                         'bug': '/delete/bug',
-
+                        // 'test case': '/delete/testCase',
+                        // 'feature request': '/delete/featureRequest',
+                    },
+                    createUrl: {
+                        '1': '/create/bug',
+                        '2': '/create/featureRequest',
+                        '3': '/create/testCase',
+                    },
+                    editUrl: {
+                        '1': '/update/bug',
+                        // '2': '/update/featureRequest',
+                        // '3': '/update/testCase',
                     },
                 }
             },
@@ -92,7 +111,7 @@
                 _delete() {
                     let selectLn = $("input[type='checkbox']:checked").length;
                     if (selectLn < 1) {
-                        alert('請選擇欲一筆項目!');
+                        alert('請選擇一筆項目!');
                         return;
                     } else if (selectLn > 1) {
                         alert('一次只能選擇一筆');
@@ -114,7 +133,7 @@
                                 alert('無權限執行此動作!');
                             }
                         })
-                    }else{
+                    } else {
                         alert('尚未提供該項目刪除功能');
                     }
 
@@ -122,7 +141,7 @@
                 resolve() {
                     let selectLn = $("input[type='checkbox']:checked").length;
                     if (selectLn < 1) {
-                        alert('請選擇欲一筆項目!');
+                        alert('請選擇一筆項目!');
                         return;
                     } else if (selectLn > 1) {
                         alert('一次只能選擇一筆');
@@ -141,6 +160,72 @@
                             alert('無權限執行此動作!');
                         }
                     })
+                },
+                toggleDialog(t) {
+                    $('#dialogTitle').text(t);
+                    this.dialogSatus = t;
+                    if ($(".dialog").is(":hidden")) {
+                        if (t == 'create') {
+                            $("input[name='id']").prop('hidden', true);
+                            $("#idDiv").hide();
+                            $("#createForm").attr('action', '/create/bug');
+
+                            $("#createForm input[name='id']").val("");
+                            $("#createForm input[name='summary']").val("");
+                            $("#createForm textarea[name='description']").val("");
+                            $("#createForm select[name='type']").val("1");
+                            $("#createForm select[name='severity']").val("1");
+                            $("#createForm select[name='priority']").val("1");
+                            $("input[name='user_id']").prop('hidden', false);
+                            $("input[name='status']").prop('hidden', false);
+                            $("input[name='group_id']").prop('hidden', false);
+
+                        } else if (t == 'update') {
+                            let selectLn = $("input[type='checkbox']:checked").length;
+                            if (selectLn < 1) {
+                                alert('請選擇一筆項目!');
+                                return;
+                            } else if (selectLn > 1) {
+                                alert('一次只能選擇一筆');
+                                return;
+                            }
+                            let select = $("input[type='checkbox']:checked").parent().parent().children();
+                            $("#createForm input[name='id']").val(select.eq(2).text());
+                            $("#createForm input[name='summary']").val(select.eq(4).text());
+                            $("#createForm textarea[name='description']").val(select.eq(9).text());
+                            const typeNumber = {
+                                'bug': "1",
+                                'feature request': "2",
+                                'test case': "3",
+                            };
+                            const severityNumber = {
+                                '一般': "1",
+                                '嚴重': "2",
+                                '極為嚴重': "3",
+                            };
+                            const priorityNumber = {
+                                '普通': "1",
+                                '次要': "2",
+                                '優先': "3",
+                            };
+                            $("#createForm select[name='type']").val(typeNumber[select.eq(5).text()]);
+                            $("#createForm select[name='severity']").val(severityNumber[select.eq(7).text()]);
+                            $("#createForm select[name='priority']").val(priorityNumber[select.eq(8).text()]);
+                            $("input[name='user_id']").prop('hidden', true);
+                            $("input[name='status']").prop('hidden', true);
+                            $("input[name='group_id']").prop('hidden', true);
+
+                            $("input[name='id']").prop('hidden', false);
+                            $("#idDiv").show();
+                            $("#createForm").attr('action', '/update/bug');
+                        } else {
+                            $("#createForm").attr('action', '#');
+                        }
+                        $(".dialog").show();
+                    } else {
+                        $(".dialog").hide();
+                    }
+
                 }
             },
             created() { // 生命周期-在一个实例被创建之后执行代码。 `this` 指向 vm 实例
@@ -151,6 +236,33 @@
                     "order": [
                         [1, "desc"]
                     ]
+                });
+
+                $("#DataTables_Table_0_filter").css({
+                    'position': 'absolute',
+                    'right': '274px'
+                })
+
+                let createUrl = this.createUrl;
+                let editUrl = this.editUrl;
+                let url = '';
+                $("#typeSelect").change(function() {
+                    switch ($('#dialogTitle').text()) {
+                        case 'create':
+                            url = createUrl[$(this).val()];
+                            $("#createForm").attr('action', url);
+                            break;
+                        case 'update':
+                            url = editUrl[$(this).val()];
+                            if (typeof url == 'undefined') {
+                                alert('尚未提供該項目編輯功能');
+                                $("#createForm").attr('action', "#");
+                                return;
+                            }
+                            $("#createForm").attr('action', url);
+                            break;
+                    }
+
                 });
             },
 

@@ -13,7 +13,7 @@ class Ticket extends Model
     private $_status = ["1" => "not resolve", "2" => "resolve",];
     private $_type = ["1" => "bug", "2" => "feature request", "3" => "test case",];
     private $_severity= ["1" => "一般", "2" => "嚴重", "3" => "極為嚴重",];
-    private $_priority= ["1" => "普通", "2" => "次優先", "3" => "優先",];
+    private $_priority= ["1" => "普通", "2" => "次要", "3" => "優先",];
     
     protected $fillable = [
         'user_id',
@@ -23,6 +23,7 @@ class Ticket extends Model
         'severity',
         'priority',
         'type',
+        'group_id',
     ];
 
     /**
