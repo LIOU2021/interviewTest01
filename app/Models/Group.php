@@ -40,4 +40,8 @@ class Group extends Model
     public function users(){
         return $this->HasMany(User::class);
     }
+
+    public function tickets(){
+        return $this->hasManyThrough(Ticket::class,User::class);
+    }
 }
